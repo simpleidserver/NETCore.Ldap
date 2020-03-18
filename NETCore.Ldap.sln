@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NETCore.Ldap", "src\NETCore
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02. Startup Layer", "02. Startup Layer", "{5AD74F5E-98F8-4AD0-BC15-BCEC53ABC51E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NETCore.Ldap.ConsoleApp", "src\NETCore.Ldap.ConsoleApp\NETCore.Ldap.ConsoleApp.csproj", "{9E33C450-50DC-4BFC-83AF-D68FB69066AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NETCore.Ldap.ConsoleApp", "src\NETCore.Ldap.ConsoleApp\NETCore.Ldap.ConsoleApp.csproj", "{9E33C450-50DC-4BFC-83AF-D68FB69066AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03. Test Layer", "03. Test Layer", "{CE209F6E-6320-4532-9D4A-F45634590225}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NETCore.Ldap.Acceptance.Tests", "tests\NETCore.Ldap.Acceptance.Tests\NETCore.Ldap.Acceptance.Tests.csproj", "{A029EAF6-310B-40D6-96BA-47772C73BB97}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NETCore.Ldap.Tests", "tests\NETCore.Ldap.Tests\NETCore.Ldap.Tests.csproj", "{F79B2541-6E60-41EF-A92C-23DDFDFCED69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +31,14 @@ Global
 		{9E33C450-50DC-4BFC-83AF-D68FB69066AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E33C450-50DC-4BFC-83AF-D68FB69066AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E33C450-50DC-4BFC-83AF-D68FB69066AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A029EAF6-310B-40D6-96BA-47772C73BB97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A029EAF6-310B-40D6-96BA-47772C73BB97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A029EAF6-310B-40D6-96BA-47772C73BB97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A029EAF6-310B-40D6-96BA-47772C73BB97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F79B2541-6E60-41EF-A92C-23DDFDFCED69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F79B2541-6E60-41EF-A92C-23DDFDFCED69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F79B2541-6E60-41EF-A92C-23DDFDFCED69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F79B2541-6E60-41EF-A92C-23DDFDFCED69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +46,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3F1D4799-BBC6-4612-B457-034DAB1C9599} = {E6D8F149-94FE-436A-B33B-07D949003E06}
 		{9E33C450-50DC-4BFC-83AF-D68FB69066AC} = {5AD74F5E-98F8-4AD0-BC15-BCEC53ABC51E}
+		{A029EAF6-310B-40D6-96BA-47772C73BB97} = {CE209F6E-6320-4532-9D4A-F45634590225}
+		{F79B2541-6E60-41EF-A92C-23DDFDFCED69} = {CE209F6E-6320-4532-9D4A-F45634590225}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8179BA8-9603-40CE-B88C-FF13B1B34EA6}

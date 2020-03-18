@@ -70,11 +70,65 @@ namespace NETCore.Ldap.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Authentication method is not supported.
+        /// </summary>
+        internal static string AuthenticationMethodNotSupported {
+            get {
+                return ResourceManager.GetString("AuthenticationMethodNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Entry &apos;{0}&apos; already exists.
         /// </summary>
         internal static string EntryAlreadyExists {
             get {
                 return ResourceManager.GetString("EntryAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Entry &apos;{0}&apos; doesn&apos;t exist.
+        /// </summary>
+        internal static string EntryDoesntExist {
+            get {
+                return ResourceManager.GetString("EntryDoesntExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Password is not correct.
+        /// </summary>
+        internal static string InvalidCredentials {
+            get {
+                return ResourceManager.GetString("InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The version is invalid.
+        /// </summary>
+        internal static string InvalidVersion {
+            get {
+                return ResourceManager.GetString("InvalidVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à No user password.
+        /// </summary>
+        internal static string NoUserPassword {
+            get {
+                return ResourceManager.GetString("NoUserPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Operation doesn&apos;t exist.
+        /// </summary>
+        internal static string OperationDoesntExist {
+            get {
+                return ResourceManager.GetString("OperationDoesntExist", resourceCulture);
             }
         }
         

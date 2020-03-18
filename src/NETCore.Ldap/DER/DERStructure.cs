@@ -22,7 +22,7 @@ namespace NETCore.Ldap.DER
             Length = length;
         }
 
-        public ICollection<byte> SerializeDerStructure(bool skipCheck = false, byte? b = null)
+        protected ICollection<byte> SerializeDerStructure(bool skipCheck = false, byte? b = null)
         {
             var result = new List<byte>();
             if (b == null)

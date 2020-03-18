@@ -8,7 +8,7 @@ namespace NETCore.Ldap.DER.Applications.Responses
 {
     public class BindResponse : BaseOperationDone
     {
-        public BindResponse()
+        public BindResponse() : base()
         {
             Tag = new DERTag
             {
@@ -22,6 +22,15 @@ namespace NETCore.Ldap.DER.Applications.Responses
         public DEROctetString ServerSaslCreds { get; set; }
         public List<byte> Buffer { get; set; }
 
+        public static BindResponse Extract(ICollection<byte> buffer)
+        {
+            var result = new BindResponse();
+            result.Result.ResultCode = DEREnumerated<LDAPResultCodes>.Extract(buffer);
+            result.Result.MatchedDN = DEROctetString.Extract(buffer);
+            result.Result.DiagnosticMessage = DEROctetString.Extract(buffer);
+            return result;
+        }
+
         public override ICollection<byte> Serialize()
         {
             var content = new List<byte>();
@@ -34,10 +43,8 @@ namespace NETCore.Ldap.DER.Applications.Responses
             }
 
             Length = content.Count();
-
             var result = new List<byte>();
             result.AddRange(content);
-
             return result;
         }
     }

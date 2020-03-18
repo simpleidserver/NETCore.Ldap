@@ -10,7 +10,7 @@ namespace NETCore.Ldap.DER.Applications.Responses
     /// </summary>
     public class SearchResultDone : BaseOperationDone
     {
-        public SearchResultDone()
+        public SearchResultDone() : base()
         {
             Tag = new DERTag
             {
@@ -33,7 +33,6 @@ namespace NETCore.Ldap.DER.Applications.Responses
             var content = new List<byte>();
             content.AddRange(Result.Serialize());
             Length = content.Count();
-
             var result = new List<byte>();
             result.AddRange(content);
             return result;

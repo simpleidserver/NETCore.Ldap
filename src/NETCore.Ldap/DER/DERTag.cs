@@ -120,7 +120,7 @@ namespace NETCore.Ldap.DER
 
         public byte Serialize()
         {
-            var cl = Convert.ToString((byte)TagClass).PadLeft(2, '0');
+            var cl = Convert.ToString((byte)TagClass, 2).PadLeft(2, '0');
             var pc = Convert.ToString((byte)PcType);
             string tabNumber = string.Empty;
             if (TagClass == ClassTags.Application)
@@ -131,6 +131,11 @@ namespace NETCore.Ldap.DER
             if (TagClass == ClassTags.Universal)
             {
                 tabNumber = Convert.ToString((byte)UniversalClassType.Value, 2).PadLeft(5, '0');
+            }
+
+            if (TagClass == ClassTags.ContextSpecific)
+            {
+                tabNumber = Convert.ToString((byte)TagNumber).PadLeft(5, '0');
             }
 
             var bits = $"{cl}{pc}{tabNumber}";

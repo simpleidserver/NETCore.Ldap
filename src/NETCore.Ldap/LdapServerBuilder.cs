@@ -2,9 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using Microsoft.Extensions.DependencyInjection;
 using NETCore.Ldap.Domain;
+using NETCore.Ldap.Parser;
 using NETCore.Ldap.Persistence;
 using NETCore.Ldap.Persistence.InMemory;
-using System.Collections.Generic;
+using System;
+using System.Collections.Concurrent;
+using System.Linq;
 
 namespace NETCore.Ldap
 {
@@ -17,9 +20,31 @@ namespace NETCore.Ldap
             _services = services;
         }
 
-        public LdapServerBuilder AddSchemas(ICollection<LDAPSchema> schemas)
+        public LdapServerBuilder ImportLDIF(string filePath)
         {
-            _services.AddSingleton<ILDAPSchemaQueryStore>(new InMemoryLDAPSchemaQueryStore(schemas));
+            var parser = new LDIFParser();
+            var operations = parser.Parse(filePath);
+            var entries = new ConcurrentBag<LDAPEntry>();
+            foreach(var operation in operations)
+            {
+                if (operation.Type == ChangeRecordTypes.ADD)
+                {
+                    var changeAdd = operation as ChangeAdd;
+                    entries.Add(new LDAPEntry
+                    {
+                        DistinguishedName = changeAdd.DistinguishedName,
+                        Attributes = changeAdd.Attributes.Select(a => new LDAPEntryAttribute
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            Name = a.Type,
+                            Value = a.Value
+                        }).ToList()
+                    });
+                }
+            }
+
+            _services.AddSingleton<ILDAPEntryQueryStore>(new InMemoryLDAPEntryQueryStore(entries));
+            _services.AddSingleton<ILDAPEntryCommandStore>(new InMemoryLDAPEntryCommandStore(entries));
             return this;
         }
     }

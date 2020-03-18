@@ -5,6 +5,11 @@ namespace NETCore.Ldap.DER.Applications.Responses
 {
     public abstract class BaseOperationDone : DERApplicationType
     {
+        public BaseOperationDone()
+        {
+            Result = new LDAPResult();
+        }
+
         public LDAPResult Result { get; set; }
     }
 }

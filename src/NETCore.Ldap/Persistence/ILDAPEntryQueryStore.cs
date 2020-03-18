@@ -9,7 +9,8 @@ namespace NETCore.Ldap.Persistence
 {
     public interface ILDAPEntryQueryStore
     {
-        Task<LDAPEntry> Get(string dn);
+        Task<LDAPEntry> Get(string distinguishedName);
+        Task<LDAPEntry> GetByAttribute(string key, string value);
         IEnumerable<LDAPEntry> Search(SearchLdapEntriesParameter parameter);
     }
 }

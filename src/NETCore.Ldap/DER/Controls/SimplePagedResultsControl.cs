@@ -40,12 +40,10 @@ namespace NETCore.Ldap.DER.Controls
             var content = new List<byte>();
             content.AddRange(Size.Serialize());
             content.AddRange(Cookie.Serialize());
-
             Length = content.Count;
             var result = new List<byte>();
             result.AddRange(SerializeDerStructure());
             result.AddRange(content);
-
             return result;
         }
     }

@@ -2,10 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using NETCore.Ldap.DER.Universals;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NETCore.Ldap.DER
 {
+    [DebuggerDisplay("LDAP packet {MessageId.Value}")]
     public class LdapPacket : DERStructure
     {
         public LdapPacket()
@@ -30,7 +32,11 @@ namespace NETCore.Ldap.DER
             ldapPacket.ExtractTagAndLength(buffer);
             ldapPacket.MessageId = DERInteger.Extract(buffer);
             ldapPacket.ProtocolOperation = DERProtocolOperation.Extract(buffer);
-            ldapPacket.Controls = DERSequence<DERControl>.Extract(buffer);
+            if (buffer.Count > 0)
+            {
+                ldapPacket.Controls = DERSequence<DERControl>.Extract(buffer);
+            }
+
             return ldapPacket;
         }
 
@@ -44,8 +50,7 @@ namespace NETCore.Ldap.DER
                 content.AddRange(Controls.Serialize(0xa0));
             }
 
-            Length = content.Count();            
-
+            Length = content.Count();
             var result = new List<byte>();
             result.AddRange(SerializeDerStructure(true));
             result.AddRange(content);

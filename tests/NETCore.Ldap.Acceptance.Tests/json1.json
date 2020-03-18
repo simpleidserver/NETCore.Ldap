@@ -1,0 +1,99 @@
+{
+  "MessageId": {
+    "Value": 1,
+    "Tag": {
+      "TagClass": 0,
+      "PcType": 0,
+      "LdapCommand": null,
+      "UniversalClassType": 2,
+      "TagNumber": 2
+    },
+    "Length": 1
+  },
+  "ProtocolOperation": {
+    "Operation": {
+      "ServerSaslCreds": null,
+      "Buffer": null,
+      "Result": {
+        "ResultCode": {
+          "Value": 0,
+          "Tag": {
+            "TagClass": 0,
+            "PcType": 0,
+            "LdapCommand": null,
+            "UniversalClassType": 10,
+            "TagNumber": 10
+          },
+          "Length": 1
+        },
+        "MatchedDN": {
+          "Value": "uid=administrator,ou=users,ou=system",
+          "Payload": [ 117, 105, 100, 61, 97, 100, 109, 105, 110, 105, 115, 116, 114, 97, 116, 111, 114, 44, 111, 117, 61, 117, 115, 101, 114, 115, 44, 111, 117, 61, 115, 121, 115, 116, 101, 109 ],
+          "Tag": {
+            "TagClass": 0,
+            "PcType": 0,
+            "LdapCommand": null,
+            "UniversalClassType": 4,
+            "TagNumber": 4
+          },
+          "Length": 36
+        },
+        "DiagnosticMessage": {
+          "Value": "",
+          "Payload": [],
+          "Tag": {
+            "TagClass": 0,
+            "PcType": 0,
+            "LdapCommand": null,
+            "UniversalClassType": 4,
+            "TagNumber": 4
+          },
+          "Length": 0
+        },
+        "Tag": {
+          "TagClass": 0,
+          "PcType": 1,
+          "LdapCommand": null,
+          "UniversalClassType": 16,
+          "TagNumber": 16
+        },
+        "Length": 0
+      },
+      "Tag": {
+        "TagClass": 1,
+        "PcType": 1,
+        "LdapCommand": 1,
+        "UniversalClassType": null,
+        "TagNumber": 1
+      },
+      "Length": 0
+    },
+    "Tag": {
+      "TagClass": 1,
+      "PcType": 1,
+      "LdapCommand": 1,
+      "UniversalClassType": null,
+      "TagNumber": 1
+    },
+    "Length": 43
+  },
+  "Controls": {
+    "Values": [],
+    "Tag": {
+      "TagClass": 0,
+      "PcType": 0,
+      "LdapCommand": null,
+      "UniversalClassType": 0,
+      "TagNumber": 0
+    },
+    "Length": 0
+  },
+  "Tag": {
+    "TagClass": 0,
+    "PcType": 1,
+    "LdapCommand": null,
+    "UniversalClassType": 16,
+    "TagNumber": 16
+  },
+  "Length": 52
+}

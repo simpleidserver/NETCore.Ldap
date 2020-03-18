@@ -17,6 +17,9 @@ namespace NETCore.Ldap.DER.Applications
         /// For example, this code is returned if the client attempts to StartTLS [RFC4346] while there are other uncompleted operations or if a TLS layer was already installed.
         /// </summary>
         OperationsError = 1,
+        /// <summary>
+        /// Indicates the server received data that is not well-formed.
+        /// </summary>
         ProtocolError = 2,
         TimeLimitExceeded = 3,
         SizeLimitExceeded = 4,

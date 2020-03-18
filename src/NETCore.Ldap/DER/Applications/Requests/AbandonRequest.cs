@@ -30,9 +30,7 @@ namespace NETCore.Ldap.DER.Applications.Requests
         public static AbandonRequest Extract(ICollection<byte> buffer)
         {
             var abandonRequest = new AbandonRequest();
-
             abandonRequest.MessageId = DEROctetString.Extract(buffer);
-
             return abandonRequest;
         }
 

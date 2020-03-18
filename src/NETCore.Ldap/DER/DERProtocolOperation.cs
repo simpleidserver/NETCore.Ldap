@@ -57,6 +57,9 @@ namespace NETCore.Ldap.DER
                 case LdapCommands.SearchResultDone:
                     result.Operation = SearchResultDone.Extract(buffer);
                     break;
+                case LdapCommands.BindResponse:
+                    result.Operation = BindResponse.Extract(buffer);
+                    break;
             }
 
             return result;
@@ -67,7 +70,6 @@ namespace NETCore.Ldap.DER
             var content = Operation.Serialize();
             Tag = Operation.Tag;
             Length = content.Count();
-
             var result = new List<byte>();
             result.AddRange(SerializeDerStructure(true));
             result.AddRange(content);

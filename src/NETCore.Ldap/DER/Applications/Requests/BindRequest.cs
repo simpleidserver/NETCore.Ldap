@@ -9,11 +9,8 @@ namespace NETCore.Ldap.DER.Applications.Requests
 {
     public enum BindRequestAuthenticationChoices
     {
-        Simple = 0,
-        SASL = 3,
-        SicilyPackageDiscovery = 9,
-        SicilyNegotiate = 10,
-        SicilyResponse = 11
+        SIMPLE = 0,
+        SASL = 3
     }
 
 
@@ -26,7 +23,24 @@ namespace NETCore.Ldap.DER.Applications.Requests
     /// </summary>
     public class BindRequest : DERApplicationType
     {
+        public BindRequest()
+        {
+            Tag = new DERTag
+            {
+                LdapCommand = LdapCommands.BindRequest,
+                TagClass = ClassTags.Application,
+                TagNumber = (int)LdapCommands.BindRequest,
+                PcType = PcTypes.Constructed
+            };
+        }
+
+        /// <summary>
+        /// A version number indicating the version of the protocol to be used in this protocol session.
+        /// </summary>
         public DERInteger Version { get; set; }
+        /// <summary>
+        /// The name (DN) of the directory object that the client wishes to bind as.
+        /// </summary>
         public DEROctetString Name { get; set; }
         public BaseAuthChoice Authentication { get; set; }
 
@@ -43,7 +57,7 @@ namespace NETCore.Ldap.DER.Applications.Requests
                 case BindRequestAuthenticationChoices.SASL:
                     result.Authentication = SASLAuthChoice.Extract(buffer);
                     break;
-                case BindRequestAuthenticationChoices.Simple:
+                case BindRequestAuthenticationChoices.SIMPLE:
                     result.Authentication = SimpleAuthChoice.Extract(buffer);
                     break;
             }
@@ -53,7 +67,18 @@ namespace NETCore.Ldap.DER.Applications.Requests
 
         public override ICollection<byte> Serialize()
         {
-            throw new System.NotImplementedException();
+            var result = new List<byte>();
+            result.AddRange(Version.Serialize());
+            result.AddRange(Name.Serialize());
+            var flag = new DERTag
+            {
+                PcType = PcTypes.Primitive,
+                TagClass = ClassTags.ContextSpecific,
+                TagNumber = (int)Authentication.Type
+            };
+            result.Add(flag.Serialize());
+            result.AddRange(Authentication.Serialize());
+            return result;
         }
     }
 }

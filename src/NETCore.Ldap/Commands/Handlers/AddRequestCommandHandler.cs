@@ -18,11 +18,11 @@ namespace NETCore.Ldap.Commands.Handlers
 {
     public class AddRequestCommandHandler : IAddRequestCommandHandler
     {
-        private readonly ILDAPSchemaQueryStore _ldapQueryStore;
+        private readonly ILDAPEntryQueryStore _ldapQueryStore;
         private readonly ILDAPEntryCommandStore _ldapCommandStore;
-        private readonly ILDAPSchemaQueryStore _ldapSchemaQueryStore;
+        private readonly ILDAPEntryQueryStore _ldapSchemaQueryStore;
 
-        public AddRequestCommandHandler(ILDAPSchemaQueryStore ldapQueryStore, ILDAPEntryCommandStore ldapCommandStore, ILDAPSchemaQueryStore ldapSchemaQueryStore)
+        public AddRequestCommandHandler(ILDAPEntryQueryStore ldapQueryStore, ILDAPEntryCommandStore ldapCommandStore, ILDAPEntryQueryStore ldapSchemaQueryStore)
         {
             _ldapQueryStore = ldapQueryStore;
             _ldapCommandStore = ldapCommandStore;
@@ -32,11 +32,11 @@ namespace NETCore.Ldap.Commands.Handlers
         public async Task<ICollection<LdapPacket>> Execute(AddRequestCommand addRequestCommand)
         {
             var addRequest = addRequestCommand.ProtocolOperation.Operation as AddRequest;
-            var objectClassAttribute = addRequest.Attributes.Values.FirstOrDefault(v => v.Type.Value == LdapConstants.StandardAttributeNames.ObjectClass);
+            var objectClassAttribute = addRequest.Attributes.Values.FirstOrDefault(v => v.Type.Value == LdapConstants.StandardAttributeTypeNames.ObjectClass);
             var dn = addRequest.Entry.Value;
             if (objectClassAttribute == null)
             {
-                throw new LdapException(string.Format(Global.AttributeIsMissing, LdapConstants.StandardAttributeNames.ObjectClass), LDAPResultCodes.Other, dn);
+                throw new LdapException(string.Format(Global.AttributeIsMissing, LdapConstants.StandardAttributeTypeNames.ObjectClass), LDAPResultCodes.Other, dn);
             }
 
             var rootDN = dn.ExtractRootDN();

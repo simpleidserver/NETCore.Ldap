@@ -29,10 +29,8 @@ namespace NETCore.Ldap.DER.Applications.Requests
         public static DelRequest Extract(ICollection<byte> buffer, int length)
         {
             var result = new DelRequest();
-
             var valueBuffer = buffer.Dequeue(length);
             result.Entry = Encoding.ASCII.GetString(valueBuffer.ToArray());
-
             return result;
         }
 

@@ -10,7 +10,7 @@ namespace NETCore.Ldap.DER.Applications.Responses
     /// </summary>
     public class DelResponse : BaseOperationDone
     {
-        public DelResponse()
+        public DelResponse() : base()
         {
             Tag = new DERTag
             {

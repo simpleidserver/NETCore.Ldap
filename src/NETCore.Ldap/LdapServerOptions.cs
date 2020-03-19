@@ -12,9 +12,13 @@ namespace NETCore.Ldap
             IpAdr = IPAddress.Parse("127.0.0.1");
             Port = 389;
             UserPasswordAttributeName = LdapConstants.StandardAttributeTypeNames.UserPassword;
+            MustAttributeName = LdapConstants.StandardAttributeTypeNames.Must;
+            MayAttributeName = LdapConstants.StandardAttributeTypeNames.May;
             ObjectClassAttributeName = LdapConstants.StandardAttributeTypeNames.ObjectClass;
             NameAttributeName = LdapConstants.StandardAttributeTypeNames.Name;
             EqualityAttributeName = LdapConstants.StandardAttributeTypeNames.Equality;
+            SingleValueAttributeName = LdapConstants.StandardAttributeTypeNames.SingleValue;
+            SyntaxAttributeName = LdapConstants.StandardAttributeTypeNames.Syntax;
         }
 
         /// <summary>
@@ -34,6 +38,14 @@ namespace NETCore.Ldap
         /// </summary>
         public string ObjectClassAttributeName { get; set; }
         /// <summary>
+        /// May attribute name.
+        /// </summary>
+        public string MayAttributeName { get; set; }
+        /// <summary>
+        /// Must attribute name.
+        /// </summary>
+        public string MustAttributeName { get; set; }
+        /// <summary>
         /// Name attribute name.
         /// </summary>
         public string NameAttributeName { get; set; }
@@ -41,5 +53,13 @@ namespace NETCore.Ldap
         /// Equality attribute name.
         /// </summary>
         public string EqualityAttributeName { get; set; }
+        /// <summary>
+        /// SingleValue attribute name.
+        /// </summary>
+        public string SingleValueAttributeName { get; set; }
+        /// <summary>
+        /// Syntax attribute name.
+        /// </summary>
+        public string SyntaxAttributeName { get; set; }
     }
 }

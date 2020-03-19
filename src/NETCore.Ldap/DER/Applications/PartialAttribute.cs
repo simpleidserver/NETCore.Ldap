@@ -6,6 +6,14 @@ using System.Linq;
 
 namespace NETCore.Ldap.DER.Applications
 {
+    /// <summary>
+    /// An attribute consists of a type and one or more values of that type.
+    /// Each attribute value is distinct in the set (no duplicates)
+    /// PartialAttributeList ::= SEQUENCE OF SEQUENCE {
+    ///     type AttributeDescription,
+    ///     vals    SET OF AttributeValue
+    /// }
+    /// </summary>
     public class PartialAttribute : DERStructure
     {
         public PartialAttribute()
@@ -30,11 +38,9 @@ namespace NETCore.Ldap.DER.Applications
             content.AddRange(Type.Serialize());
             content.AddRange(Vals.Serialize());
             Length = content.Count();
-
             var result = new List<byte>();
             result.AddRange(SerializeDerStructure(true));
             result.AddRange(content);
-
             return result;;
         }
 

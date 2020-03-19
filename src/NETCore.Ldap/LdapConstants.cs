@@ -30,6 +30,7 @@ namespace NETCore.Ldap
         {
             public const string OID = "1.3.6.1.4.1.1466.115.121.1.38";
             public const string OctetStringOID = "1.3.6.1.4.1.1466.115.121.1.40";
+            public const string BooleanOID = "1.3.6.1.4.1.1466.115.121.1.7";
         }
 
         public static class StandardAttributeTypeNames
@@ -38,6 +39,10 @@ namespace NETCore.Ldap
             public const string ObjectClass = "objectClass";
             public const string Name = "m-name";
             public const string Equality = "m-equality";
+            public const string Must = "m-must";
+            public const string May = "m-may";
+            public const string SingleValue = "m-singlevalue";
+            public const string Syntax = "m-syntax";
         }
 
         public static class StandardMatchingRuleName

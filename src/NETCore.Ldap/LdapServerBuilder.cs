@@ -7,6 +7,7 @@ using NETCore.Ldap.Persistence;
 using NETCore.Ldap.Persistence.InMemory;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NETCore.Ldap
@@ -37,7 +38,7 @@ namespace NETCore.Ldap
                         {
                             Id = Guid.NewGuid().ToString(),
                             Name = a.Type,
-                            Value = a.Value
+                            Values = new List<string> { a.Value }
                         }).ToList()
                     });
                 }

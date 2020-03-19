@@ -60,6 +60,9 @@ namespace NETCore.Ldap.DER
                 case LdapCommands.BindResponse:
                     result.Operation = BindResponse.Extract(buffer);
                     break;
+                case LdapCommands.AddResponse:
+                    result.Operation = AddResponse.Extract(buffer);
+                    break;
             }
 
             return result;

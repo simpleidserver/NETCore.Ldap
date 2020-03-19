@@ -1,5 +1,6 @@
 ﻿// Copyright (c) SimpleIdServer. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+using NETCore.Ldap.DER.Universals;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,15 @@ namespace NETCore.Ldap.DER.Applications.Responses
             Length = content.Count();
             var result = new List<byte>();
             result.AddRange(content);
+            return result;
+        }
+
+        public static AddResponse Extract(ICollection<byte> buffer)
+        {
+            var result = new AddResponse();
+            result.Result.ResultCode = DEREnumerated<LDAPResultCodes>.Extract(buffer);
+            result.Result.MatchedDN = DEROctetString.Extract(buffer);
+            result.Result.DiagnosticMessage = DEROctetString.Extract(buffer);
             return result;
         }
     }

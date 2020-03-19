@@ -44,10 +44,10 @@ namespace NETCore.Ldap.Authentication
             }
 
             var attributeType = await _ldapEntryQueryStore.GetByAttribute(_options.NameAttributeName, passwordAttribute.Name);
-            var equality = attributeType.Attributes.First(attr => attr.Name == _options.EqualityAttributeName).Value;
+            var equality = attributeType.Attributes.First(attr => attr.Name == _options.EqualityAttributeName).Values.First();
             var matchingRuleHandler = _matchingRuleHandlerFactory.Build(equality);
-            var hashed = Build(simpleAuth.Value.Value, passwordAttribute.Value);
-            if (!matchingRuleHandler.Handle(passwordAttribute, hashed))
+            var hashed = Build(simpleAuth.Value.Value, passwordAttribute.Values.First());
+            if (!matchingRuleHandler.Handle(passwordAttribute, new List<string> { hashed }))
             {
                 throw new LdapException(Global.InvalidCredentials, LDAPResultCodes.InvalidCredentials, dn);
             } 

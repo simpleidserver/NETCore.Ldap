@@ -11,6 +11,7 @@ namespace NETCore.Ldap.Persistence
     {
         Task<LDAPEntry> Get(string distinguishedName);
         Task<LDAPEntry> GetByAttribute(string key, string value);
+        Task<ICollection<LDAPEntry>> GetByAttributes(ICollection<KeyValuePair<string, string>> attributes);
         IEnumerable<LDAPEntry> Search(SearchLdapEntriesParameter parameter);
     }
 }

@@ -4,7 +4,9 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\AddRequestError - Copier.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Features\BindRequest - Copier.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Features\BindRequestError - Copier.feature.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
@@ -21,6 +23,12 @@
     <ProjectReference Include="..\..\src\NETCore.Ldap\NETCore.Ldap.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Features\AddRequest.feature.cs">
+      <DependentUpon>AddRequest.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Features\AddRequestError.feature.cs">
+      <DependentUpon>AddRequestError.feature</DependentUpon>
+    </Compile>
     <Compile Update="Features\BindRequestError.feature.cs">
       <DependentUpon>BindRequestError.feature</DependentUpon>
     </Compile>
@@ -31,6 +39,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <SpecFlowFeatureFiles Update="Features\AddRequest.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Features\AddRequestError.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Features\BindRequestError.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>

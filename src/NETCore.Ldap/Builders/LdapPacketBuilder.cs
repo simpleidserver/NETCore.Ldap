@@ -23,5 +23,21 @@ namespace NETCore.Ldap.Builders
             };
             return result;
         }
+
+        public static LdapPacket NewAddRequest(int messageId, string distinguishedName, Action<AddRequestBuilder> callback)
+        {
+            var addRequestBuilder = new AddRequestBuilder(distinguishedName);
+            callback(addRequestBuilder);
+            var addRequest = addRequestBuilder.Build();
+            var result = new LdapPacket
+            {
+                MessageId = new DERInteger(messageId),
+                ProtocolOperation = new DERProtocolOperation
+                {
+                    Operation = addRequest
+                }
+            };
+            return result;
+        }
     }
 }

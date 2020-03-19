@@ -22,6 +22,7 @@ namespace NETCore.Ldap.Acceptance.Tests.Steps
     public class SharedSteps
     {
         private readonly ScenarioContext _scenarioContext;
+        private Stream _stream;
         private static object _obj = new object();
         private static ILdapServer _ldapServer;
         private static IServiceProvider _serviceProvider;
@@ -47,6 +48,8 @@ namespace NETCore.Ldap.Acceptance.Tests.Steps
                     _ldapServer.Start();
                 }
 
+                var client = new TcpClient("127.0.0.1", 389);
+                _stream = client.GetStream();
                 _manualResetEvent.WaitOne();
             }
         }
@@ -74,7 +77,10 @@ namespace NETCore.Ldap.Acceptance.Tests.Steps
                 {
                     Id = Guid.NewGuid().ToString(),
                     Name = key,
-                    Value = value
+                    Values = new List<string>
+                    {
+                        value
+                    }
                 });
             }
 
@@ -88,14 +94,25 @@ namespace NETCore.Ldap.Acceptance.Tests.Steps
             {
                 opt.SetSimpleAuthentication(password);
             }).Serialize().ToArray();
-            var client = new TcpClient("127.0.0.1", 389);
-            var stream = client.GetStream();
-            await stream.WriteAsync(payload);
-            var data = new byte[5000];
-            await stream.ReadAsync(data, 0, data.Length);
-            var ldapPacket = LdapPacket.Extract(data.ToList());
-            var ldapPacketJSON = JObject.FromObject(ldapPacket);
-            _scenarioContext.Set(ldapPacketJSON, "ldapPacket");
+            await Send(payload);
+        }
+
+        [When("Add LDAP entry '(.*)' and MessageId '(.*)'")]
+        public async Task WhenExecuteAddRequest(string dn, int messageId, Table table)
+        {
+            var payload = LdapPacketBuilder.NewAddRequest(messageId, dn, (opt) =>
+            {
+                foreach(var record in table.Rows)
+                {
+                    var key = record["Key"];
+                    var value = record["Value"];
+                    opt.AddAttribute(key, new List<string>
+                    {
+                        value
+                    });
+                }
+            }).Serialize().ToArray();
+            await Send(payload);
         }
 
         [Then("LDAP Packet '(.*)'='(.*)'")]
@@ -104,6 +121,16 @@ namespace NETCore.Ldap.Acceptance.Tests.Steps
             var jsonHttpBody = _scenarioContext["ldapPacket"] as JObject;
             var currentValue = jsonHttpBody.SelectToken(key).ToString().ToLowerInvariant();
             Assert.Equal(value.ToLowerInvariant(), currentValue);
+        }
+
+        private async Task Send(byte[] payload)
+        {
+            await _stream.WriteAsync(payload);
+            var data = new byte[5000];
+            await _stream.ReadAsync(data, 0, data.Length);
+            var ldapPacket = LdapPacket.Extract(data.ToList());
+            var ldapPacketJSON = JObject.FromObject(ldapPacket);
+            _scenarioContext.Set(ldapPacketJSON, "ldapPacket");
         }
     }
 }

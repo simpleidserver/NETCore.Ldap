@@ -17,17 +17,17 @@ namespace NETCore.Ldap.Acceptance.Tests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class BindRequestFeature : Xunit.IClassFixture<BindRequestFeature.FixtureData>, System.IDisposable
+    public partial class AddRequestFeature : Xunit.IClassFixture<AddRequestFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "BindRequest.feature"
+#line 1 "AddRequest.feature"
 #line hidden
         
-        public BindRequestFeature(BindRequestFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public AddRequestFeature(AddRequestFeature.FixtureData fixtureData, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -36,7 +36,7 @@ namespace NETCore.Ldap.Acceptance.Tests.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BindRequest", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "AddRequest", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -76,55 +76,72 @@ namespace NETCore.Ldap.Acceptance.Tests.Features
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute(DisplayName="Login and password authentication")]
-        [Xunit.TraitAttribute("FeatureTitle", "BindRequest")]
-        [Xunit.TraitAttribute("Description", "Login and password authentication")]
-        public virtual void LoginAndPasswordAuthentication()
+        [Xunit.FactAttribute(DisplayName="Add LDAP entry")]
+        [Xunit.TraitAttribute("FeatureTitle", "AddRequest")]
+        [Xunit.TraitAttribute("Description", "Add LDAP entry")]
+        public virtual void AddLDAPEntry()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login and password authentication", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add LDAP entry", null, ((string[])(null)));
 #line 3
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Value"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "objectClass",
                         "inetOrgPerson"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "objectClass",
                         "organizationalPerson"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "objectClass",
                         "person"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "objectClass",
                         "top"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "cn",
                         "administrator"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "sn",
                         "administrator"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "uid",
                         "administrator"});
-            table20.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         "userPassword",
                         "password"});
 #line 4
- testRunner.Given("Add LDAP entry \'uid=administrator,ou=users,ou=system\'", ((string)(null)), table20, "Given ");
+ testRunner.Given("Add LDAP entry \'admin10\'", ((string)(null)), table1, "Given ");
 #line 15
- testRunner.When("Authenticate user with login \'uid=administrator,ou=users,ou=system\', password \'pa" +
-                    "ssword\' and MessageId \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Authenticate user with login \'admin10\', password \'password\' and MessageId \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Key",
+                        "Value"});
+            table2.AddRow(new string[] {
+                        "objectClass",
+                        "person"});
+            table2.AddRow(new string[] {
+                        "objectClass",
+                        "top"});
+            table2.AddRow(new string[] {
+                        "sn",
+                        "surname"});
+            table2.AddRow(new string[] {
+                        "cn",
+                        "commonname"});
 #line 16
+ testRunner.And("Add LDAP entry \'uid=newuser,ou=users,ou=system\' and MessageId \'1\'", ((string)(null)), table2, "And ");
+#line 23
  testRunner.Then("LDAP Packet \'MessageId.Value\'=\'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 17
+#line 24
  testRunner.Then("LDAP Packet \'ProtocolOperation.Operation.Result.ResultCode.Value\'=\'0\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 18
- testRunner.Then("LDAP Packet \'ProtocolOperation.Operation.Result.MatchedDN.Value\'=\'uid=administrat" +
-                    "or,ou=users,ou=system\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
+ testRunner.Then("LDAP Packet \'ProtocolOperation.Operation.Result.MatchedDN.Value\'=\'uid=newuser,ou=" +
+                    "users,ou=system\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -136,12 +153,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                BindRequestFeature.FeatureSetup();
+                AddRequestFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                BindRequestFeature.FeatureTearDown();
+                AddRequestFeature.FeatureTearDown();
             }
         }
     }

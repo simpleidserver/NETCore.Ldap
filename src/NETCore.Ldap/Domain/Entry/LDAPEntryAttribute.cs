@@ -1,14 +1,21 @@
 ﻿// Copyright (c) SimpleIdServer. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NETCore.Ldap.Domain
 {
     public class LDAPEntryAttribute : ICloneable
     {
+        public LDAPEntryAttribute()
+        {
+            Values = new List<string>();
+        }
+
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
+        public ICollection<string> Values { get; set; }
 
         public object Clone()
         {
@@ -16,7 +23,7 @@ namespace NETCore.Ldap.Domain
             {
                 Id = Id,
                 Name = Name,
-                Value = Value
+                Values = Values.ToList()
             };
         }
     }

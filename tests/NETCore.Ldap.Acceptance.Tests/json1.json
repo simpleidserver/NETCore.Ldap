@@ -1,99 +1,178 @@
 {
-  "MessageId": {
-    "Value": 1,
-    "Tag": {
-      "TagClass": 0,
-      "PcType": 0,
-      "LdapCommand": null,
-      "UniversalClassType": 2,
-      "TagNumber": 2
+  {
+    "MessageId": {
+      "Value": 1,
+      "Tag": {
+        "TagClass": 0,
+        "PcType": 0,
+        "LdapCommand": null,
+        "UniversalClassType": 2,
+        "TagNumber": 2
+      },
+      "Length": 1
     },
-    "Length": 1
-  },
-  "ProtocolOperation": {
-    "Operation": {
-      "ServerSaslCreds": null,
-      "Buffer": null,
-      "Result": {
-        "ResultCode": {
-          "Value": 0,
-          "Tag": {
-            "TagClass": 0,
-            "PcType": 0,
-            "LdapCommand": null,
-            "UniversalClassType": 10,
-            "TagNumber": 10
+    "ProtocolOperation": {
+      "Operation": {
+        "Result": {
+          "ResultCode": {
+            "Value": 68,
+            "Tag": {
+              "TagClass": 0,
+              "PcType": 0,
+              "LdapCommand": null,
+              "UniversalClassType": 10,
+              "TagNumber": 10
+            },
+            "Length": 1
           },
-          "Length": 1
-        },
-        "MatchedDN": {
-          "Value": "uid=administrator,ou=users,ou=system",
-          "Payload": [ 117, 105, 100, 61, 97, 100, 109, 105, 110, 105, 115, 116, 114, 97, 116, 111, 114, 44, 111, 117, 61, 117, 115, 101, 114, 115, 44, 111, 117, 61, 115, 121, 115, 116, 101, 109 ],
-          "Tag": {
-            "TagClass": 0,
-            "PcType": 0,
-            "LdapCommand": null,
-            "UniversalClassType": 4,
-            "TagNumber": 4
+          "MatchedDN": {
+            "Value": "uid=user,ou=users,ou=system",
+            "Payload": [
+              117,
+              105,
+              100,
+              61,
+              117,
+              115,
+              101,
+              114,
+              44,
+              111,
+              117,
+              61,
+              117,
+              115,
+              101,
+              114,
+              115,
+              44,
+              111,
+              117,
+              61,
+              115,
+              121,
+              115,
+              116,
+              101,
+              109
+            ],
+            "Tag": {
+              "TagClass": 0,
+              "PcType": 0,
+              "LdapCommand": null,
+              "UniversalClassType": 4,
+              "TagNumber": 4
+            },
+            "Length": 27
           },
-          "Length": 36
-        },
-        "DiagnosticMessage": {
-          "Value": "",
-          "Payload": [],
+          "DiagnosticMessage": {
+            "Value": "Entry 'uid=user,ou=users,ou=system' already exists",
+            "Payload": [
+              69,
+              110,
+              116,
+              114,
+              121,
+              32,
+              39,
+              117,
+              105,
+              100,
+              61,
+              117,
+              115,
+              101,
+              114,
+              44,
+              111,
+              117,
+              61,
+              117,
+              115,
+              101,
+              114,
+              115,
+              44,
+              111,
+              117,
+              61,
+              115,
+              121,
+              115,
+              116,
+              101,
+              109,
+              39,
+              32,
+              97,
+              108,
+              114,
+              101,
+              97,
+              100,
+              121,
+              32,
+              101,
+              120,
+              105,
+              115,
+              116,
+              115
+            ],
+            "Tag": {
+              "TagClass": 0,
+              "PcType": 0,
+              "LdapCommand": null,
+              "UniversalClassType": 4,
+              "TagNumber": 4
+            },
+            "Length": 50
+          },
           "Tag": {
             "TagClass": 0,
-            "PcType": 0,
+            "PcType": 1,
             "LdapCommand": null,
-            "UniversalClassType": 4,
-            "TagNumber": 4
+            "UniversalClassType": 16,
+            "TagNumber": 16
           },
           "Length": 0
         },
         "Tag": {
-          "TagClass": 0,
+          "TagClass": 1,
           "PcType": 1,
-          "LdapCommand": null,
-          "UniversalClassType": 16,
-          "TagNumber": 16
+          "LdapCommand": 9,
+          "UniversalClassType": null,
+          "TagNumber": 9
         },
         "Length": 0
       },
       "Tag": {
         "TagClass": 1,
         "PcType": 1,
-        "LdapCommand": 1,
+        "LdapCommand": 9,
         "UniversalClassType": null,
-        "TagNumber": 1
+        "TagNumber": 9
+      },
+      "Length": 84
+    },
+    "Controls": {
+      "Values": [],
+      "Tag": {
+        "TagClass": 0,
+        "PcType": 0,
+        "LdapCommand": null,
+        "UniversalClassType": 0,
+        "TagNumber": 0
       },
       "Length": 0
     },
     "Tag": {
-      "TagClass": 1,
-      "PcType": 1,
-      "LdapCommand": 1,
-      "UniversalClassType": null,
-      "TagNumber": 1
-    },
-    "Length": 43
-  },
-  "Controls": {
-    "Values": [],
-    "Tag": {
       "TagClass": 0,
-      "PcType": 0,
+      "PcType": 1,
       "LdapCommand": null,
-      "UniversalClassType": 0,
-      "TagNumber": 0
+      "UniversalClassType": 16,
+      "TagNumber": 16
     },
-    "Length": 0
-  },
-  "Tag": {
-    "TagClass": 0,
-    "PcType": 1,
-    "LdapCommand": null,
-    "UniversalClassType": 16,
-    "TagNumber": 16
-  },
-  "Length": 52
+    "Length": 93
+  }
 }

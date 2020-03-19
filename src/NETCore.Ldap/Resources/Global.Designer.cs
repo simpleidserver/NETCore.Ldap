@@ -70,11 +70,38 @@ namespace NETCore.Ldap.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Attributes &apos;{0}&apos; are undefined.
+        /// </summary>
+        internal static string AttributesUndefined {
+            get {
+                return ResourceManager.GetString("AttributesUndefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Attribute &apos;{0}&apos; does not respect the syntax &apos;{1}&apos;.
+        /// </summary>
+        internal static string AttributeSyntaxNotValid {
+            get {
+                return ResourceManager.GetString("AttributeSyntaxNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Authentication method is not supported.
         /// </summary>
         internal static string AuthenticationMethodNotSupported {
             get {
                 return ResourceManager.GetString("AuthenticationMethodNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à There are duplicate values in the attribute &apos;{0}&apos;.
+        /// </summary>
+        internal static string DuplicateValue {
+            get {
+                return ResourceManager.GetString("DuplicateValue", resourceCulture);
             }
         }
         
@@ -115,6 +142,15 @@ namespace NETCore.Ldap.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à No LDAP session.
+        /// </summary>
+        internal static string NoLdapSession {
+            get {
+                return ResourceManager.GetString("NoLdapSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à No user password.
         /// </summary>
         internal static string NoUserPassword {
@@ -142,11 +178,38 @@ namespace NETCore.Ldap.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Required attributes &apos;{0}&apos; are missing.
+        /// </summary>
+        internal static string RequiredAttributeMissing {
+            get {
+                return ResourceManager.GetString("RequiredAttributeMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Schema &apos;{0}&apos; doesn&apos;t exist.
         /// </summary>
         internal static string SchemaDoesntExist {
             get {
                 return ResourceManager.GetString("SchemaDoesntExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Attribute &apos;{0}&apos; must be a single value.
+        /// </summary>
+        internal static string SingleValue {
+            get {
+                return ResourceManager.GetString("SingleValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Unknown object classes &apos;{0}&apos;.
+        /// </summary>
+        internal static string UnknownObjectClasses {
+            get {
+                return ResourceManager.GetString("UnknownObjectClasses", resourceCulture);
             }
         }
     }

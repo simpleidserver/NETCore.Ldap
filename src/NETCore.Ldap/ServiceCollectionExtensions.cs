@@ -9,6 +9,7 @@ using NETCore.Ldap.MatchingRule;
 using NETCore.Ldap.Persistence;
 using NETCore.Ldap.Persistence.InMemory;
 using NETCore.Ldap.Services;
+using NETCore.Ldap.SyntaxValidator;
 using System;
 using System.Collections.Concurrent;
 
@@ -34,6 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddLdapCommands()
                 .AddLdapStores()
                 .AddServices()
+                .AddSyntaxValidator()
                 .AddLogging();
             return builder;
         }
@@ -42,6 +44,12 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddTransient<IAuthenticationHandlerFactory, AuthenticationHandlerFactory>();
             services.AddTransient<IAuthenticationHandler, SimpleAuthenticationHandler>();
+            return services;
+        }
+
+        private static IServiceCollection AddSyntaxValidator(this IServiceCollection services)
+        {
+            services.AddTransient<IAttributeSyntaxValidator, BooleanSyntax>();
             return services;
         }
 

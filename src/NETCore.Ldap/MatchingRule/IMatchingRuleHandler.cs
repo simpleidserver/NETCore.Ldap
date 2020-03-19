@@ -8,6 +8,6 @@ namespace NETCore.Ldap.MatchingRule
     public interface IMatchingRuleHandler
     {
         string Name { get; }
-        bool Handle(LDAPEntryAttribute ldapEntryAttribute, string value);
+        bool Handle(LDAPEntryAttribute ldapEntryAttribute, ICollection<string> values);
     }
 }

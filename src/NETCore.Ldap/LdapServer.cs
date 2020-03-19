@@ -5,11 +5,15 @@ using Microsoft.Extensions.Options;
 using NETCore.Ldap.Commands;
 using NETCore.Ldap.DER;
 using NETCore.Ldap.DER.Applications;
+using NETCore.Ldap.DER.Applications.Requests;
 using NETCore.Ldap.DER.Applications.Responses;
 using NETCore.Ldap.DER.Universals;
 using NETCore.Ldap.Exceptions;
 using NETCore.Ldap.Extensions;
+using NETCore.Ldap.Resources;
 using System;
+using System.Collections.Concurrent;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
@@ -22,6 +26,7 @@ namespace NETCore.Ldap
         private readonly LdapServerOptions _options;
         private readonly ILdapService _ldapService;
         private readonly ILogger _logger;
+        private ConcurrentBag<LdapSession> _ldapSessionStoreLst;
         private TcpListener _tcpListener;
         private CancellationTokenSource _tokenSource;
 
@@ -31,6 +36,7 @@ namespace NETCore.Ldap
             _ldapService = ldapService;
             _logger = logger;
             _tcpListener = new TcpListener(_options.IpAdr, _options.Port);
+            _ldapSessionStoreLst = new ConcurrentBag<LdapSession>();
         }
 
         public event EventHandler Started;
@@ -81,7 +87,9 @@ namespace NETCore.Ldap
                 ClientConnected(this, EventArgs.Empty);
             }
 
-            var stream = client.GetStream();            
+            var stream = client.GetStream();
+            var ldapSession = new LdapSession(stream);
+            _ldapSessionStoreLst.Add(ldapSession);
             bool isContinue = true;
             while (!_tokenSource.IsCancellationRequested && isContinue)
             {
@@ -91,6 +99,12 @@ namespace NETCore.Ldap
                     byte[] buffer = new byte[1024];
                     stream.Read(buffer, 0, buffer.Length);
                     ldapRequest = LdapPacket.Extract(buffer.ToList());
+                    if (ldapSession.State == LdapSessionStates.Created && !(ldapRequest.ProtocolOperation.Operation is BindRequest))
+                    {
+                        throw new LdapException(Global.NoLdapSession, LDAPResultCodes.OperationsError, string.Empty);
+                    }
+
+                    ldapSession.State = LdapSessionStates.Authenticated;
                     var packetLst = await _ldapService.Handle(ldapRequest);
                     foreach (var packet in packetLst)
                     {
@@ -116,6 +130,7 @@ namespace NETCore.Ldap
                 }
             }
 
+            _ldapSessionStoreLst.Remove(ldapSession);
             if (ClientDisconnected != null)
             {
                 ClientDisconnected(this, EventArgs.Empty);
@@ -163,6 +178,23 @@ namespace NETCore.Ldap
             };
 
             return ldapPacket;
+        }
+
+        private enum LdapSessionStates
+        {
+            Created = 0,
+            Authenticated = 1
+        }
+
+        private class LdapSession
+        {
+            public LdapSession(Stream stream)
+            {
+                Stream = stream;
+            }
+
+            public Stream Stream { get; set; }
+            public LdapSessionStates State { get; set; }
         }
     }
 }

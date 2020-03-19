@@ -27,7 +27,13 @@ namespace NETCore.Ldap.Persistence.InMemory
 
         public Task<LDAPEntry> GetByAttribute(string key, string value)
         {
-            return Task.FromResult(_entries.FirstOrDefault(e => e.Attributes.Any(attr => attr.Name == key && attr.Value == value)));
+            return Task.FromResult(_entries.FirstOrDefault(e => e.Attributes.Any(attr => attr.Name == key && attr.Values.Contains(value))));
+        }
+
+        public Task<ICollection<LDAPEntry>> GetByAttributes(ICollection<KeyValuePair<string, string>> attributes)
+        {
+            ICollection<LDAPEntry> result = _entries.Where(e => e.Attributes.Any(attr => attributes.Any(a => a.Key == attr.Name && attr.Values.Contains(a.Value)))).ToList();
+            return Task.FromResult(result);
         }
 
         public IEnumerable<LDAPEntry> Search(SearchLdapEntriesParameter parameter)

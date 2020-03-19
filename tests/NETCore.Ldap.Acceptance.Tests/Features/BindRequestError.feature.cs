@@ -111,35 +111,35 @@ this.ScenarioInitialize(scenarioInfo);
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "Key",
                         "Value"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "objectClass",
                         "inetOrgPerson"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "objectClass",
                         "organizationalPerson"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "objectClass",
                         "person"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "objectClass",
                         "top"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "cn",
                         "administrator"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "sn",
                         "administrator"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "uid",
                         "administrator"});
-            table2.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "userPassword",
                         "password"});
 #line 11
- testRunner.Given("Add LDAP entry \'admin\'", ((string)(null)), table2, "Given ");
+ testRunner.Given("Add LDAP entry \'admin\'", ((string)(null)), table21, "Given ");
 #line 22
  testRunner.When("Authenticate user with login \'admin\', password \'invalidpassword\' and MessageId \'1" +
                     "\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

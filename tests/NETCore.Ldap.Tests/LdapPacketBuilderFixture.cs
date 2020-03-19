@@ -7,6 +7,7 @@ using NETCore.Ldap.DER.Applications.AuthChoices;
 using NETCore.Ldap.DER.Applications.Requests;
 using NETCore.Ldap.DER.Applications.Responses;
 using NETCore.Ldap.DER.Universals;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -59,6 +60,24 @@ namespace NETCore.Ldap.Tests
             Assert.Equal("administrator", ldapResult.MatchedDN.Value);
             Assert.Equal("error", ldapResult.DiagnosticMessage.Value);
             Assert.Equal(LDAPResultCodes.AuthMethodNotSupported, ldapResult.ResultCode.Value);
+        }
+
+        [Fact]
+        public void When_Serialize_AddRequest()
+        {
+            var payload = LdapPacketBuilder.NewAddRequest(1, "administrator", (opt) =>
+            {
+                opt.AddAttribute("objectClass", new List<string>
+                {
+                    "inetOrgPerson"
+                });
+            }).Serialize().ToList();
+            var ldapPacket = LdapPacket.Extract(payload);
+            var addRequest = ldapPacket.ProtocolOperation.Operation as AddRequest;
+            Assert.NotNull(ldapPacket);
+            Assert.Equal(1, ldapPacket.MessageId.Value);
+            Assert.True(addRequest.Attributes.Values.Count() == 1);
+            Assert.Equal("objectClass", addRequest.Attributes.Values.First().Type.Value);
         }
     }
 }

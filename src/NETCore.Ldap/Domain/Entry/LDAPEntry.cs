@@ -14,6 +14,7 @@ namespace NETCore.Ldap.Domain
         }
 
         public string DistinguishedName { get; set; }
+        public int Level { get; set; }
         public ICollection<LDAPEntryAttribute> Attributes { get; set; }
 
         public override bool Equals(object obj)
@@ -37,6 +38,7 @@ namespace NETCore.Ldap.Domain
             return new LDAPEntry
             {
                 DistinguishedName = DistinguishedName,
+                Level = Level,
                 Attributes = Attributes.Select(a => (LDAPEntryAttribute)a.Clone()).ToList()
             };
         }

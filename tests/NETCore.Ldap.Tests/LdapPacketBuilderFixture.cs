@@ -79,5 +79,17 @@ namespace NETCore.Ldap.Tests
             Assert.True(addRequest.Attributes.Values.Count() == 1);
             Assert.Equal("objectClass", addRequest.Attributes.Values.First().Type.Value);
         }
+
+        [Fact]
+        public void When_Serialize_SearchRequest()
+        {
+            var payload = LdapPacketBuilder.NewSearchRequest(1, "cn=system", SearchRequestScopes.BaseObject, SearchRequestDeferAliases.NeverDerefAliases, 10, 10, false, new List<string> { }, (opt) =>
+            {
+                opt.SetEqualFilter("name", "value");
+            }).Serialize().ToList();
+            var ldapPacket = LdapPacket.Extract(payload);
+            var searchRequest = ldapPacket.ProtocolOperation.Operation as SearchRequest;
+            Assert.NotNull(searchRequest);
+        }
     }
 }

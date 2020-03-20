@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace NETCore.Ldap.Persistence.Parameters
 {
-    public enum SearchScopes
+    public enum SearchScopeTypes
     {
         BaseObject = 0,
         SingleLevel = 1,
         WholeSubtree = 2
     }
 
-    public enum SearchFilters
+    public enum SearchFilterTypes
     {
         And = 0,
         Or = 1,
@@ -24,24 +24,24 @@ namespace NETCore.Ldap.Persistence.Parameters
         ApproxMatch = 8
     }
 
-    public class LdapAttributeFilter
+    public class LDAPAttributeFilter
     {
-        public LdapAttributeFilter()
+        public LDAPAttributeFilter()
         {
-            Filters = new List<LdapAttributeFilter>();
+            Filters = new List<LDAPAttributeFilter>();
         }
 
         public string AttributeName { get; set; }
         public string AttributeValue { get; set; }
-        public SearchFilters Filter { get; set; }
-        public ICollection<LdapAttributeFilter> Filters { get; set; }
+        public SearchFilterTypes Type { get; set; }
+        public ICollection<LDAPAttributeFilter> Filters { get; set; }
     }
 
-    public class SearchLdapEntriesParameter
+    public class SearchLDAPEntriesParameter
     {
-        public string DistinguishedName { get; set; }
-        public int Level { get; set; }
-        public SearchScopes Scope { get; set; }
-        public LdapAttributeFilter Filter { get; set; }
+        public string BaseDistinguishedName { get; set; }
+        public int SizeLimit { get; set; }
+        public SearchScopeTypes Scope { get; set; }
+        public LDAPAttributeFilter Filter { get; set; }
     }
 }

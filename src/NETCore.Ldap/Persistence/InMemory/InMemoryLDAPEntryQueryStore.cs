@@ -1,6 +1,7 @@
 ﻿// Copyright (c) SimpleIdServer. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using NETCore.Ldap.Domain;
+using NETCore.Ldap.Extensions;
 using NETCore.Ldap.Persistence.Parameters;
 using System;
 using System.Collections.Concurrent;
@@ -36,24 +37,23 @@ namespace NETCore.Ldap.Persistence.InMemory
             return Task.FromResult(result);
         }
 
-        public IEnumerable<LDAPEntry> Search(SearchLdapEntriesParameter parameter)
+        public Task<IEnumerable<LDAPEntry>> Search(SearchLDAPEntriesParameter parameter)
         {
             IEnumerable<LDAPEntry> result = null;
-            /*
+            var level = parameter.BaseDistinguishedName.ComputeLevel();
             switch (parameter.Scope)
             {
-                case SearchScopes.BaseObject:
-                    result = _entries.Where(r => r.DistinguishedName == parameter.DistinguishedName && r.Level == parameter.Level);
+                case SearchScopeTypes.BaseObject:
+                    result = _entries.Where(r => r.DistinguishedName == parameter.BaseDistinguishedName);
                     break;
-                case SearchScopes.SingleLevel:
-                    var nextLevel = parameter.Level + 1;
-                    result = _entries.Where(r => r.DistinguishedName.EndsWith(parameter.DistinguishedName) && r.Level == nextLevel);
+                case SearchScopeTypes.SingleLevel:
+                    result = _entries.Where(r => r.DistinguishedName.EndsWith(parameter.BaseDistinguishedName) && r.Level == level + 1);
                     break;
-                case SearchScopes.WholeSubtree:
-                    result = _entries.Where(r => r.DistinguishedName.EndsWith(parameter.DistinguishedName) && r.Level >= parameter.Level);
+                case SearchScopeTypes.WholeSubtree:
+                    result = _entries.Where(r => r.DistinguishedName.EndsWith(parameter.BaseDistinguishedName));
                     break;
             }
-            */
+
             if (parameter.Filter != null)
             {
                 var exprTree = (Expression<Func<LDAPEntry, bool>>)BuildExpression(parameter.Filter);
@@ -61,10 +61,15 @@ namespace NETCore.Ldap.Persistence.InMemory
                 result = result.Where(compiledExprTree);
             }
 
-            return result;
+            if (parameter.SizeLimit > 0)
+            {
+                result = result.Take(parameter.SizeLimit);
+            }
+
+            return Task.FromResult(result);
         }
 
-        private Expression BuildExpression(LdapAttributeFilter ldapAttributeFilter, ParameterExpression parentExpression = null)
+        private Expression BuildExpression(LDAPAttributeFilter ldapAttributeFilter, ParameterExpression parentExpression = null)
         {
             ParameterExpression rootExpression = Expression.Parameter(typeof(LDAPEntry), "r");
             if (parentExpression != null)
@@ -73,7 +78,7 @@ namespace NETCore.Ldap.Persistence.InMemory
             }
 
             Expression comparison = null;
-            if (ldapAttributeFilter.Filter == SearchFilters.Or || ldapAttributeFilter.Filter == SearchFilters.And)
+            if (ldapAttributeFilter.Type == SearchFilterTypes.Or || ldapAttributeFilter.Type == SearchFilterTypes.And)
             {
                 int i = 0;
                 Expression leftExpr = null;
@@ -87,12 +92,12 @@ namespace NETCore.Ldap.Persistence.InMemory
                     }
                     else
                     {
-                        switch (ldapAttributeFilter.Filter)
+                        switch (ldapAttributeFilter.Type)
                         {
-                            case SearchFilters.And:
+                            case SearchFilterTypes.And:
                                 leftExpr = Expression.And(leftExpr, childExpression);
                                 break;
-                            case SearchFilters.Or:
+                            case SearchFilterTypes.Or:
                                 leftExpr = Expression.Or(leftExpr, childExpression);
                                 break;
                         }
@@ -108,27 +113,28 @@ namespace NETCore.Ldap.Persistence.InMemory
                 return result;
             }
 
+            var lst = new List<string>();
+            var methodInfo = typeof(List<string>).GetMethod("Contains", new Type[] { typeof(string) });
             var memberExpression = Expression.PropertyOrField(rootExpression, "Attributes");
             var attribute = Expression.Parameter(typeof(LDAPEntryAttribute), "a");
             var attributeName = Expression.PropertyOrField(attribute, "Name");
-            var attributeValue = Expression.PropertyOrField(attribute, "Value");
+            var attributesValue = Expression.PropertyOrField(attribute, "Values");
             var nameConstant = Expression.Constant(ldapAttributeFilter.AttributeName, typeof(string));
             var valueConstant = Expression.Constant(ldapAttributeFilter.AttributeValue, typeof(string));
             var equalityName = Expression.Call(typeof(string), "Equals", null, attributeName, nameConstant, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
-            var equalityValue = Expression.Call(typeof(string), "Equals", null, attributeValue, valueConstant, Expression.Constant(StringComparison.CurrentCultureIgnoreCase));
-
-            switch (ldapAttributeFilter.Filter)
+            var equalityValue = Expression.Call(attributesValue, methodInfo, valueConstant);
+            switch (ldapAttributeFilter.Type)
             {
-                case SearchFilters.Present:
+                case SearchFilterTypes.Present:
                     comparison = equalityName;
                     break;
-                case SearchFilters.EqualityMatch:
+                case SearchFilterTypes.EqualityMatch:
                     comparison = Expression.AndAlso(equalityName, equalityValue);
                     break;
-                case SearchFilters.GreaterOrEqual:
+                case SearchFilterTypes.GreaterOrEqual:
                     comparison = Expression.GreaterThanOrEqual(equalityName, equalityValue);
                     break;
-                case SearchFilters.LessOrEqual:
+                case SearchFilterTypes.LessOrEqual:
                     comparison = Expression.LessThanOrEqual(equalityName, equalityValue);
                     break;
             }

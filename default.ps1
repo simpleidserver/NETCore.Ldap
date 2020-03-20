@@ -38,8 +38,24 @@ task compile -depends clean {
     exec { dotnet build .\NETCore.Ldap.sln -c $config --version-suffix=$buildSuffix }
 }
  
-task pack -depends compile {
+task pack -depends compile {	
+	exec { dotnet pack $source_dir\NETCore.Ldap\NETCore.Ldap.csproj -c $config --no-build $versionSuffix --output $result_dir }
 }
 
 task test {
+    Push-Location -Path $base_dir\tests\NETCore.Ldap.Acceptance.Tests
+
+    try {
+        exec { & dotnet test -c $config -v n --no-build --no-restore }
+    } finally {
+        Pop-Location
+    }
+	
+    Push-Location -Path $base_dir\tests\NETCore.Ldap.Tests
+
+    try {
+        exec { & dotnet test -c $config -v n --no-build --no-restore }
+    } finally {
+        Pop-Location
+    }
 }

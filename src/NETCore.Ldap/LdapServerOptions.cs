@@ -1,6 +1,7 @@
 ﻿// Copyright (c) SimpleIdServer. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.Net;
 
 namespace NETCore.Ldap
@@ -11,10 +12,22 @@ namespace NETCore.Ldap
         {
             IpAdr = IPAddress.Parse("127.0.0.1");
             Port = 389;
+            VendorName = "SimpleIdServer";
+            VendorVersion = "1.0.0";
+            SupportedLDAPVersion = 3;
+            NamingContexts = new List<string>
+            {
+                "dc=example,dc=com",
+                "ou=config",
+                "ou=schema",
+                "ou=system",
+                "cn=schema"
+            };
+            SubSchemaSubEntry = "cn=schema";
             UserPasswordAttributeName = LdapConstants.StandardAttributeTypeNames.UserPassword;
+            ObjectClassAttributeName = LdapConstants.StandardAttributeTypeNames.ObjectClass;
             MustAttributeName = LdapConstants.StandardAttributeTypeNames.Must;
             MayAttributeName = LdapConstants.StandardAttributeTypeNames.May;
-            ObjectClassAttributeName = LdapConstants.StandardAttributeTypeNames.ObjectClass;
             NameAttributeName = LdapConstants.StandardAttributeTypeNames.Name;
             EqualityAttributeName = LdapConstants.StandardAttributeTypeNames.Equality;
             SingleValueAttributeName = LdapConstants.StandardAttributeTypeNames.SingleValue;
@@ -37,6 +50,26 @@ namespace NETCore.Ldap
         /// ObjectClass attribute name.
         /// </summary>
         public string ObjectClassAttributeName { get; set; }
+        /// <summary>
+        /// Vendor name.
+        /// </summary>
+        public string VendorName { get; set; }
+        /// <summary>
+        /// Version version.
+        /// </summary>
+        public string VendorVersion { get; set; }
+        /// <summary>
+        /// Supported LDAP version.
+        /// </summary>
+        public int SupportedLDAPVersion { get; set; }
+        /// <summary>
+        /// Naming contexts.
+        /// </summary>
+        public ICollection<string> NamingContexts { get; set; }
+        /// <summary>
+        /// Sub schema sub entry.
+        /// </summary>
+        public string SubSchemaSubEntry { get; set; }
         /// <summary>
         /// May attribute name.
         /// </summary>

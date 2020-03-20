@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using Microsoft.Extensions.DependencyInjection;
 using NETCore.Ldap.Domain;
+using NETCore.Ldap.Extensions;
 using NETCore.Ldap.Parser;
 using NETCore.Ldap.Persistence;
 using NETCore.Ldap.Persistence.InMemory;
@@ -34,6 +35,7 @@ namespace NETCore.Ldap
                     entries.Add(new LDAPEntry
                     {
                         DistinguishedName = changeAdd.DistinguishedName,
+                        Level = changeAdd.DistinguishedName.ComputeLevel(),
                         Attributes = changeAdd.Attributes.Select(a => new LDAPEntryAttribute
                         {
                             Id = Guid.NewGuid().ToString(),

@@ -70,13 +70,6 @@ namespace NETCore.Ldap.DER.Applications.Requests
             var result = new List<byte>();
             result.AddRange(Version.Serialize());
             result.AddRange(Name.Serialize());
-            var flag = new DERTag
-            {
-                PcType = PcTypes.Primitive,
-                TagClass = ClassTags.ContextSpecific,
-                TagNumber = (int)Authentication.Type
-            };
-            result.Add(flag.Serialize());
             result.AddRange(Authentication.Serialize());
             return result;
         }

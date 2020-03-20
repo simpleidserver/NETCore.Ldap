@@ -21,16 +21,16 @@ namespace NETCore.Ldap.DER.Applications.Requests
             };
         }
 
-        public static UnbindRequest Extract(ICollection<byte> buffer)
-        {
-            var unbindRequest = new UnbindRequest();
-            return unbindRequest;
-        }
-
         public override ICollection<byte> Serialize()
         {
             var result = new List<byte>();
             return result;
+        }
+
+        public static UnbindRequest Extract(ICollection<byte> buffer)
+        {
+            var unbindRequest = new UnbindRequest();
+            return unbindRequest;
         }
     }
 }

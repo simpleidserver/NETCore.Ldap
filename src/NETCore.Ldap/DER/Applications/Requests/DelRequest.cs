@@ -26,17 +26,17 @@ namespace NETCore.Ldap.DER.Applications.Requests
 
         public string Entry { get; set; }
 
+        public override ICollection<byte> Serialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public static DelRequest Extract(ICollection<byte> buffer, int length)
         {
             var result = new DelRequest();
             var valueBuffer = buffer.Dequeue(length);
             result.Entry = Encoding.ASCII.GetString(valueBuffer.ToArray());
             return result;
-        }
-
-        public override ICollection<byte> Serialize()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

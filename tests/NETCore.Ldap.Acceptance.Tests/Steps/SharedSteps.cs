@@ -3,6 +3,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using NETCore.Ldap.Builders;
 using NETCore.Ldap.DER;
+using NETCore.Ldap.DER.Applications.Requests;
+using NETCore.Ldap.DER.Applications.Responses;
 using NETCore.Ldap.Domain;
 using NETCore.Ldap.Persistence;
 using Newtonsoft.Json.Linq;
@@ -115,10 +117,48 @@ namespace NETCore.Ldap.Acceptance.Tests.Steps
             await Send(payload);
         }
 
+        [When("Search LDAP entries, base object is '(.*)', message identifier is '(.*)'")]
+        public async Task WhenExecuteSearchRequest(string dn, int messageId)
+        {
+            var payload = LdapPacketBuilder.NewSearchRequest(messageId, dn, SearchRequestScopes.WholeSubtree, SearchRequestDeferAliases.NeverDerefAliases, 10, 10, false, new List<string> { }, (opt) =>
+            {
+                opt.SetPresentFilter("objectClass");
+            }).Serialize().ToArray();
+            await _stream.WriteAsync(payload);
+            bool isSearchResultDone = false;
+            int i = 0;
+            while(!isSearchResultDone)
+            {
+                var data = new byte[5000];
+                await _stream.ReadAsync(data, 0, data.Length);
+                var ldapPacket = LdapPacket.Extract(data.ToList());
+                var ldapPacketJSON = JObject.FromObject(ldapPacket);
+                if (ldapPacket.ProtocolOperation.Operation is SearchResultDone)
+                {
+                    isSearchResultDone = true;
+                    _scenarioContext.Set(ldapPacketJSON, "searchResultDone");
+                }
+                else
+                {
+                    _scenarioContext.Set(ldapPacketJSON, $"searchResultEntry-{i}");
+                }
+
+                i++;
+            }
+        }
+
         [Then("LDAP Packet '(.*)'='(.*)'")]
         public void ThenEqualsTo(string key, string value)
         {
             var jsonHttpBody = _scenarioContext["ldapPacket"] as JObject;
+            var currentValue = jsonHttpBody.SelectToken(key).ToString().ToLowerInvariant();
+            Assert.Equal(value.ToLowerInvariant(), currentValue);
+        }
+
+        [Then("extract JSON '(.*)', JSON '(.*)'='(.*)'")]
+        public void ThenExtractJSONEqualsTo(string jsonKey, string key, string value)
+        {
+            var jsonHttpBody = _scenarioContext[jsonKey] as JObject;
             var currentValue = jsonHttpBody.SelectToken(key).ToString().ToLowerInvariant();
             Assert.Equal(value.ToLowerInvariant(), currentValue);
         }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) SimpleIdServer. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 using NETCore.Ldap.Extensions;
-using SimpleIdServer.Ldap.Core.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -19,6 +18,11 @@ namespace NETCore.Ldap.DER.Universals
                 TagNumber = (int)UniversalClassTypes.Enumerated,
                 PcType = PcTypes.Primitive
             };
+        }
+
+        public DEREnumerated(T value) : this()
+        {
+            Value = value;
         }
 
         public T Value { get; set; }

@@ -44,6 +44,18 @@ namespace NETCore.Ldap.DER.Applications.Requests
         /// </summary>
         public PartialAttribute Modification { get; set; }
 
+        public override ICollection<byte> Serialize()
+        {
+            var content = new List<byte>();
+            content.AddRange(Operation.Serialize());
+            content.AddRange(Modification.Serialize());
+            Length = content.Count();
+            var result = new List<byte>();
+            result.AddRange(SerializeDerStructure());
+            result.AddRange(content);
+            return result;
+        }
+
         public static ModifyRequestChange Extract(ICollection<byte> buffer)
         {
             var result = new ModifyRequestChange();
@@ -52,19 +64,6 @@ namespace NETCore.Ldap.DER.Applications.Requests
             result.Operation = DEREnumerated<ModifyRequestChangeOperations>.Extract(buffer);
             result.Modification = PartialAttribute.Extract(buffer);
 
-            return result;
-        }
-
-        public override ICollection<byte> Serialize()
-        {
-            var content = new List<byte>();
-            content.AddRange(Operation.Serialize());
-            content.AddRange(Modification.Serialize());
-            Length = content.Count();
-
-            var result = new List<byte>();
-            result.AddRange(SerializeDerStructure());
-            result.AddRange(content);
             return result;
         }
     }
@@ -100,7 +99,12 @@ namespace NETCore.Ldap.DER.Applications.Requests
         /// A list of modifications to be performed on the entry.
         /// </summary>
         public DERSequence<ModifyRequestChange> Changes { get; set; }
-        
+
+        public override ICollection<byte> Serialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public static ModifyRequest Extract(ICollection<byte> buffer)
         {
             var modifyRequest = new ModifyRequest();
@@ -109,11 +113,6 @@ namespace NETCore.Ldap.DER.Applications.Requests
             modifyRequest.Changes = DERSequence<ModifyRequestChange>.Extract(buffer);
 
             return modifyRequest;
-        }
-
-        public override ICollection<byte> Serialize()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

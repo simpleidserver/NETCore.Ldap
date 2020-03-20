@@ -135,7 +135,7 @@ namespace NETCore.Ldap.DER
 
             if (TagClass == ClassTags.ContextSpecific)
             {
-                tabNumber = Convert.ToString((byte)TagNumber).PadLeft(5, '0');
+                tabNumber = Convert.ToString((byte)TagNumber, 2).PadLeft(5, '0');
             }
 
             var bits = $"{cl}{pc}{tabNumber}";

@@ -7,6 +7,11 @@ namespace NETCore.Ldap.Extensions
 {
     public static class StringExtensions
     {
+        public static int ComputeLevel(this string str)
+        {
+            return str.ExtractRDN().Count();
+        }
+
         public static ICollection<string> ExtractRDN(this string str)
         {
             return str.Split(',');

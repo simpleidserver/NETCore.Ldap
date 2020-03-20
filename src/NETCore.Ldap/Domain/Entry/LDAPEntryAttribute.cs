@@ -15,7 +15,7 @@ namespace NETCore.Ldap.Domain
 
         public string Id { get; set; }
         public string Name { get; set; }
-        public ICollection<string> Values { get; set; }
+        public List<string> Values { get; set; }
 
         public object Clone()
         {

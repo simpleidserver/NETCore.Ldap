@@ -19,7 +19,6 @@ namespace NETCore.Ldap.DER.Applications.AuthChoices
         public static SimpleAuthChoice Extract(ICollection<byte> buffer)
         {
             var result = new SimpleAuthChoice();
-            result.Tag = DERTag.Extract(buffer);
             result.Value = DEROctetString.Extract(buffer);
             return result;
         }
@@ -27,6 +26,12 @@ namespace NETCore.Ldap.DER.Applications.AuthChoices
         public override ICollection<byte> Serialize()
         {
             var result = new List<byte>();
+            Value.Tag = new DERTag
+            {
+                PcType = PcTypes.Primitive,
+                TagClass = ClassTags.ContextSpecific,
+                TagNumber = (int)BindRequestAuthenticationChoices.SIMPLE
+            };
             result.AddRange(Value.Serialize());
             return result;
         }

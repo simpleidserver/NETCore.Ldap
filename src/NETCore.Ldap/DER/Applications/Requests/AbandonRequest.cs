@@ -27,17 +27,17 @@ namespace NETCore.Ldap.DER.Applications.Requests
         /// </summary>
         public DEROctetString MessageId { get; set; }
 
+        public override ICollection<byte> Serialize()
+        {
+            var result = new List<byte>();
+            return result;
+        }
+
         public static AbandonRequest Extract(ICollection<byte> buffer)
         {
             var abandonRequest = new AbandonRequest();
             abandonRequest.MessageId = DEROctetString.Extract(buffer);
             return abandonRequest;
-        }
-
-        public override ICollection<byte> Serialize()
-        {
-            var result = new List<byte>();
-            return result;
         }
     }
 }

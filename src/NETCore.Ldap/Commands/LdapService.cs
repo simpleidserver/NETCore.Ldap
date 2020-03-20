@@ -42,7 +42,12 @@ namespace NETCore.Ldap.Commands
                         ProtocolOperation = ldapPacket.ProtocolOperation
                     });
                 case LdapCommands.SearchRequest:
-                    break;
+                    return await _searchRequestCommandHandler.Execute(new SearchRequestCommand
+                    {
+                        MessageId = ldapPacket.MessageId,
+                        Controls = ldapPacket.Controls,
+                        ProtocolOperation = ldapPacket.ProtocolOperation
+                    });
             }
 
             throw new LdapException(Global.OperationDoesntExist, LDAPResultCodes.ProtocolError, string.Empty);

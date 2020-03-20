@@ -8,7 +8,7 @@ using System.Text;
 
 namespace NETCore.Ldap.DER.Applications.Filters
 {
-    public enum SearchRequestFilters
+    public enum SearchRequestFilterTypes
     {
         And = 0,
         Or = 1,
@@ -74,7 +74,7 @@ namespace NETCore.Ldap.DER.Applications.Filters
         /// <summary>
         ///   A filter that defines the conditions that must be fulfilled in order for the Search to match a given entry.
         /// </summary>
-        public SearchRequestFilters Filter { get; set; }        
+        public SearchRequestFilterTypes Type { get; set; }        
         /// <summary>
         /// An attribute description is an attribute type and zero more options.
         /// </summary>
@@ -88,28 +88,66 @@ namespace NETCore.Ldap.DER.Applications.Filters
         /// </summary>
         public ICollection<SearchRequestFilter> Filters { get; set; }
 
+        public override ICollection<byte> Serialize()
+        {
+            var content = new List<byte>();
+            var b = new DERTag
+            {
+                PcType = PcTypes.Primitive,
+                TagClass = ClassTags.ContextSpecific,
+                TagNumber = (int)Type
+            }.Serialize();
+            switch(Type)
+            {
+                case SearchRequestFilterTypes.Present:
+                    var payload = Encoding.ASCII.GetBytes(Value);
+                    content.AddRange(payload);
+                    break;
+                case SearchRequestFilterTypes.GreaterOrEqual:
+                case SearchRequestFilterTypes.LessOrEqual:
+                case SearchRequestFilterTypes.ApproxMatch:
+                case SearchRequestFilterTypes.EqualityMatch:
+                    content.AddRange(Attribute.Serialize());
+                    break;
+                case SearchRequestFilterTypes.Or:
+                case SearchRequestFilterTypes.And:
+                    foreach (var filter in Filters)
+                    {
+                        content.AddRange(filter.Serialize());
+                    }
+
+                    break;
+            }
+
+            Length = content.Count();
+            var result = new List<byte>();
+            result.AddRange(SerializeDerStructure(true, b));
+            result.AddRange(content);
+            return result;
+        }
+        
         public static SearchRequestFilter Extract(ICollection<byte> buffer)
         {
             var result = new SearchRequestFilter();
             result.ExtractTagAndLength(buffer);
-            result.Filter = (SearchRequestFilters)result.Tag.TagNumber;
-            switch(result.Filter)
+            result.Type = (SearchRequestFilterTypes)result.Tag.TagNumber;
+            switch (result.Type)
             {
-                case SearchRequestFilters.Present:
+                case SearchRequestFilterTypes.Present:
                     var valueBuffer = buffer.Dequeue(result.Length);
                     result.Value = Encoding.ASCII.GetString(valueBuffer.ToArray());
                     break;
-                case SearchRequestFilters.GreaterOrEqual:
-                case SearchRequestFilters.LessOrEqual:
-                case SearchRequestFilters.ApproxMatch:
-                case SearchRequestFilters.EqualityMatch:
+                case SearchRequestFilterTypes.GreaterOrEqual:
+                case SearchRequestFilterTypes.LessOrEqual:
+                case SearchRequestFilterTypes.ApproxMatch:
+                case SearchRequestFilterTypes.EqualityMatch:
                     result.Attribute = AttributeValueAssertion.Extract(buffer);
                     break;
-                case SearchRequestFilters.Or:
-                case SearchRequestFilters.And:
+                case SearchRequestFilterTypes.Or:
+                case SearchRequestFilterTypes.And:
                     int i = 0;
                     var filters = new List<SearchRequestFilter>();
-                    while(i < result.Length)
+                    while (i < result.Length)
                     {
                         var searchRequestFilter = SearchRequestFilter.Extract(buffer);
                         if (searchRequestFilter == null)
@@ -125,42 +163,6 @@ namespace NETCore.Ldap.DER.Applications.Filters
                     break;
             }
 
-            return result;
-        }
-
-        public override ICollection<byte> Serialize()
-        {
-            var content = new List<byte>();
-            byte? b = null;
-            switch(Filter)
-            {
-                case SearchRequestFilters.Present:
-                    b = 135;
-                    var payload = Encoding.ASCII.GetBytes(Value);
-                    content.AddRange(payload);
-                    break;
-                case SearchRequestFilters.GreaterOrEqual:
-                case SearchRequestFilters.LessOrEqual:
-                case SearchRequestFilters.ApproxMatch:
-                case SearchRequestFilters.EqualityMatch:
-                    b = 135;
-                    content.AddRange(Attribute.Serialize());
-                    break;
-                case SearchRequestFilters.Or:
-                case SearchRequestFilters.And:
-                    b = 163;
-                    foreach (var filter in Filters)
-                    {
-                        content.AddRange(filter.Serialize());
-                    }
-
-                    break;
-            }
-
-            Length = content.Count();
-            var result = new List<byte>();
-            result.AddRange(SerializeDerStructure(true, b));
-            result.AddRange(content);
             return result;
         }
     }

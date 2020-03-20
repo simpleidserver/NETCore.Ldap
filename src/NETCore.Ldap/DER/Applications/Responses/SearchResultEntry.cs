@@ -34,10 +34,16 @@ namespace NETCore.Ldap.DER.Applications.Responses
             content.AddRange(ObjectName.Serialize());
             content.AddRange(PartialAttributes.Serialize());
             Length = content.Count();
-
             var result = new List<byte>();
             result.AddRange(content);
-            
+            return result;
+        }
+
+        public static SearchResultEntry Extract(ICollection<byte> payload)
+        {
+            var result = new SearchResultEntry();
+            result.ObjectName = DEROctetString.Extract(payload);
+            result.PartialAttributes = DERSequence<PartialAttribute>.Extract(payload);
             return result;
         }
     }

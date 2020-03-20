@@ -7,4 +7,10 @@
   <ItemGroup>
     <ProjectReference Include="..\NETCore.Ldap\NETCore.Ldap.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LDIF.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

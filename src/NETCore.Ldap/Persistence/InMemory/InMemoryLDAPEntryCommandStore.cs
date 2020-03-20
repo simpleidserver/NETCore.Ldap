@@ -38,6 +38,7 @@ namespace NETCore.Ldap.Persistence.InMemory
 
         public bool Add(LDAPEntry representation)
         {
+            representation.Level = representation.DistinguishedName.ComputeLevel();
             _entries.Add((LDAPEntry)representation.Clone());
             return true;
         }

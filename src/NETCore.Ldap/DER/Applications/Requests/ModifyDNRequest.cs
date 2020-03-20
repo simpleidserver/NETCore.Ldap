@@ -47,6 +47,11 @@ namespace NETCore.Ldap.DER.Applications.Requests
         /// </summary>
         public DEROctetString NewSuperior { get; set; }
 
+        public override ICollection<byte> Serialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public static ModifyDNRequest Extract(ICollection<byte> buffer)
         {
             var result = new ModifyDNRequest();
@@ -64,11 +69,6 @@ namespace NETCore.Ldap.DER.Applications.Requests
             }
 
             return result;
-        }
-
-        public override ICollection<byte> Serialize()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

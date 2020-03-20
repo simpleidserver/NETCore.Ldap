@@ -99,6 +99,12 @@ namespace NETCore.Ldap
                     byte[] buffer = new byte[1024];
                     stream.Read(buffer, 0, buffer.Length);
                     ldapRequest = LdapPacket.Extract(buffer.ToList());
+                    // Sometimes we received empty request.
+                    if (ldapRequest.Length == 0)
+                    {
+                        continue;
+                    }
+
                     if (ldapSession.State == LdapSessionStates.Created && !(ldapRequest.ProtocolOperation.Operation is BindRequest))
                     {
                         throw new LdapException(Global.NoLdapSession, LDAPResultCodes.OperationsError, string.Empty);
